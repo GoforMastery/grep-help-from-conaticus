@@ -1,6 +1,11 @@
+#include "PatternToken.h"
 #include <iostream>
 #include <string>
+using namespace std;
 
+
+vector<PatternToken> parse(const string &pattern);
+bool Match(const string &input, const vector<PatternToken> &tokens);
 bool match_pattern(const std::string &input_line, const std::string &pattern) {
   if (pattern.length() == 1) {
     return input_line.find(pattern) != std::string::npos;
@@ -36,9 +41,9 @@ int main(int argc, char *argv[]) {
   std::getline(std::cin, input_line);
 
   try {
-    if (match_pattern(input_line, pattern)) {
-      return 0;
-    } else {
+    auto tokens = parse(pattern);
+    if (Match(input_line, tokens)) { return 0; }
+    else {
       return 1;
     }
   } catch (const std::runtime_error &e) {

@@ -1,0 +1,40 @@
+#include "PatternToken.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+bool MatchToken(const char &ch, const PatternToken &token) {
+  if (token.type == Digit) {
+    return isdigit(ch);
+  } else if (token.type == AlphaNumeric) {
+    return isalpha(ch);
+  } else if (token.type == Character) {
+    return ch == token.character;
+  } else if (token.type == PositiveGroup) {
+    return token.positiveCharGroup.find(ch) != token.positiveCharGroup.end();
+  } else if (token.type == NegativeGroup) {
+    return token.negativeCharGroup.find(ch) != token.negativeCharGroup.end();
+  }
+  return false;
+}
+
+bool Match(const string &input, const vector<PatternToken> &tokens) {
+  if (input.size() == 0) {
+    return false;
+  }
+  /*goal is to match all the tokens. */
+  size_t tokenIdx = 0;
+  auto currentToken = tokens[tokenIdx];
+  for (const char ch : input) {
+    if (MatchToken(ch, currentToken)) {
+      tokenIdx++;
+    }
+    if (tokenIdx == tokens.size()) {
+      return true;
+    }
+    tokenIdx = 0;
+    /*if no match start checking again. */
+  }
+  return false;
+}

@@ -1,0 +1,70 @@
+/*goal of patternParser:
+
+To take the pattern string from the user.
+eg: "[abc]\d", "foo\d", "[^a-z]"
+we want to convet it to list of vector.
+1. Digit
+2. AlphaNumeric
+3. Character
+4. PositiveGroup
+5. NegativeGroup
+
+
+*/
+#include "PatternToken.h"
+#include <unordered_set>
+#include <vector>
+
+vector<PatternToken> parse(const string &pattern) {
+  size_t stIdx = 0;
+  vector<PatternToken> store;
+  size_t ps = pattern.size();
+  while (stIdx < ps) {
+    if (stIdx + 1 < ps && pattern[stIdx] == '[' && pattern[stIdx + 1] != '^') {
+      unordered_set<char> positiveCharGroup;
+      stIdx++;
+      while (stIdx < ps && pattern[stIdx] != ']') {
+        positiveCharGroup.insert(pattern[stIdx]);
+        stIdx++;
+      }
+      /*pattern[stIdx] == ']'*/
+      PatternToken tok;
+      tok.type = PositiveGroup;
+      tok.positiveCharGroup = positiveCharGroup;
+      store.emplace_back(tok);
+      stIdx++;
+    } else if (stIdx + 1 < ps && pattern[stIdx] == '[' &&
+               pattern[stIdx + 1] == '^') {
+      unordered_set<char> negativeCharGroup;
+      stIdx += 2;
+      while (stIdx < ps && pattern[stIdx] != ']') {
+        negativeCharGroup.insert(pattern[stIdx]);
+        stIdx++;
+      }
+      PatternToken tok;
+      tok.type = NegativeGroup;
+      tok.negativeCharGroup = negativeCharGroup;
+      store.emplace_back(tok);
+      stIdx++;
+    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' &&
+               pattern[stIdx + 1] == 'd') {
+      PatternToken tok;
+      tok.type = Digit;
+      store.emplace_back(tok);
+      stIdx += 2;
+    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' &&
+               pattern[stIdx + 1] == 'w') {
+      PatternToken tok;
+      tok.type = AlphaNumeric;
+      store.emplace_back(tok);
+      stIdx += 2;
+    } else {
+      PatternToken tok;
+      tok.type = Character;
+      tok.character = pattern[stIdx];
+      store.emplace_back(tok);
+      stIdx++;
+    }
+  }
+  return store;
+}
