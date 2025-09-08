@@ -14,7 +14,7 @@ bool MatchToken(const char &ch, const PatternToken &token) {
   } else if (token.type == PositiveGroup) {
     return token.positiveCharGroup.find(ch) != token.positiveCharGroup.end();
   } else if (token.type == NegativeGroup) {
-    return token.negativeCharGroup.find(ch) != token.negativeCharGroup.end();
+    return token.negativeCharGroup.find(ch) == token.negativeCharGroup.end();
   }
   return false;
 }
