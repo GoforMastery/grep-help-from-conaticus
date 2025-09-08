@@ -33,8 +33,7 @@ vector<PatternToken> parse(const string &pattern) {
       tok.positiveCharGroup = positiveCharGroup;
       store.emplace_back(tok);
       stIdx++;
-    } else if (stIdx + 1 < ps && pattern[stIdx] == '[' &&
-               pattern[stIdx + 1] == '^') {
+    } else if (stIdx + 1 < ps && pattern[stIdx] == '[' && pattern[stIdx + 1] == '^') {
       unordered_set<char> negativeCharGroup;
       stIdx += 2;
       while (stIdx < ps && pattern[stIdx] != ']') {
@@ -46,14 +45,12 @@ vector<PatternToken> parse(const string &pattern) {
       tok.negativeCharGroup = negativeCharGroup;
       store.emplace_back(tok);
       stIdx++;
-    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' &&
-               pattern[stIdx + 1] == 'd') {
+    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' && pattern[stIdx + 1] == 'd') {
       PatternToken tok;
       tok.type = Digit;
       store.emplace_back(tok);
       stIdx += 2;
-    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' &&
-               pattern[stIdx + 1] == 'w') {
+    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' && pattern[stIdx + 1] == 'w') {
       PatternToken tok;
       tok.type = AlphaNumeric;
       store.emplace_back(tok);
