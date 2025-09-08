@@ -8,7 +8,7 @@ bool MatchToken(const char &ch, const PatternToken &token) {
   if (token.type == Digit) {
     return isdigit(ch);
   } else if (token.type == AlphaNumeric) {
-    return isalpha(ch);
+    return isalnum(ch) or ch == '_';
   } else if (token.type == Character) {
     return ch == token.character;
   } else if (token.type == PositiveGroup) {
