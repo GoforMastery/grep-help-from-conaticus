@@ -25,16 +25,19 @@ bool Match(const string &input, const vector<PatternToken> &tokens) {
   }
   /*goal is to match all the tokens. */
   size_t tokenIdx = 0;
-  auto currentToken = tokens[tokenIdx];
+  size_t charIdx = 0;
   for (const char ch : input) {
-    if (MatchToken(ch, currentToken)) {
-      tokenIdx++;
-    }
     if (tokenIdx == tokens.size()) {
       return true;
     }
-    tokenIdx = 0;
+    auto currentToken = tokens[tokenIdx];
+    if (MatchToken(ch, currentToken)) {
+      tokenIdx++;
+    } else {
+      tokenIdx = 0;
+    }
+    charIdx++;
     /*if no match start checking again. */
   }
-  return false;
+  return tokenIdx == tokens.size();
 }
