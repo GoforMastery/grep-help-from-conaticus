@@ -63,5 +63,9 @@ vector<PatternToken> parse(const string &pattern) {
       stIdx++;
     }
   }
+  cout << "debug store " << "\n";
+  for (auto t : store) {
+    cout << t.character << "\n";
+  }
   return store;
 }
