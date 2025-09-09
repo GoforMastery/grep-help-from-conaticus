@@ -20,24 +20,36 @@ bool MatchToken(const char &ch, const PatternToken &token) {
 }
 
 bool Match(const string &input, const vector<PatternToken> &tokens) {
-  if (input.size() == 0) {
+  if (input.empty()) {
     return false;
   }
   /*goal is to match all the tokens. */
   size_t tokenIdx = 0;
-  size_t charIdx = 0;
-  for (const char ch : input) {
-    if (tokenIdx == tokens.size()) {
-      return true;
+  bool justFromStart = false;
+  if (tokens[tokenIdx].character == '^') {
+    justFromStart = true;
+  }
+  if (justFromStart) {
+    int k = 0, tokenIdx = 1;
+    cout << "val of tokenIdx is " << tokens[tokenIdx].character << "\n";
+    while (tokenIdx < tokens.size() && tokens[tokenIdx].character == input[k]) {
+      k++, tokenIdx++;
     }
-    auto currentToken = tokens[tokenIdx];
-    if (MatchToken(ch, currentToken)) {
-      tokenIdx++;
-    } else {
-      tokenIdx = 0;
+    return tokenIdx == tokens.size();
+  }
+  if (!justFromStart) {
+    for (const char ch : input) {
+      if (tokenIdx == tokens.size()) {
+        return true;
+      }
+      auto currentToken = tokens[tokenIdx];
+      if (MatchToken(ch, currentToken)) {
+        tokenIdx++;
+      } else {
+        tokenIdx = 0;
+      }
+      /*if no match start checking again. */
     }
-    charIdx++;
-    /*if no match start checking again. */
   }
   return tokenIdx == tokens.size();
 }

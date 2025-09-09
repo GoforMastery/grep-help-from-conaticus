@@ -15,3 +15,5 @@ struct PatternToken {
   unordered_set<char> positiveCharGroup;
   unordered_set<char> negativeCharGroup;
 };
+vector<PatternToken> parse(const string &pattern);
+bool Match(const string &input, const vector<PatternToken> &tokens);

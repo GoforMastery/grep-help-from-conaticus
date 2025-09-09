@@ -14,16 +14,16 @@ we want to convet it to list of vector.
 #include "PatternToken.h"
 #include <unordered_set>
 #include <vector>
-
 vector<PatternToken> parse(const string &pattern) {
+  string p = pattern;
   size_t stIdx = 0;
   vector<PatternToken> store;
-  size_t ps = pattern.size();
+  size_t ps = p.size();
   while (stIdx < ps) {
-    if (stIdx + 1 < ps && pattern[stIdx] == '[' && pattern[stIdx + 1] != '^') {
+    if (stIdx + 1 < ps && p[stIdx] == '[' && p[stIdx + 1] != '^') {
       unordered_set<char> positiveCharGroup;
       stIdx++;
-      while (stIdx < ps && pattern[stIdx] != ']') {
+      while (stIdx < ps && p[stIdx] != ']') {
         positiveCharGroup.insert(pattern[stIdx]);
         stIdx++;
       }
@@ -33,11 +33,11 @@ vector<PatternToken> parse(const string &pattern) {
       tok.positiveCharGroup = positiveCharGroup;
       store.emplace_back(tok);
       stIdx++;
-    } else if (stIdx + 1 < ps && pattern[stIdx] == '[' && pattern[stIdx + 1] == '^') {
+    } else if (stIdx + 1 < ps && p[stIdx] == '[' && p[stIdx + 1] == '^') {
       unordered_set<char> negativeCharGroup;
       stIdx += 2;
-      while (stIdx < ps && pattern[stIdx] != ']') {
-        negativeCharGroup.insert(pattern[stIdx]);
+      while (stIdx < ps && p[stIdx] != ']') {
+        negativeCharGroup.insert(p[stIdx]);
         stIdx++;
       }
       PatternToken tok;
@@ -45,12 +45,12 @@ vector<PatternToken> parse(const string &pattern) {
       tok.negativeCharGroup = negativeCharGroup;
       store.emplace_back(tok);
       stIdx++;
-    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' && pattern[stIdx + 1] == 'd') {
+    } else if (stIdx + 1 < ps && p[stIdx] == '\\' && p[stIdx + 1] == 'd') {
       PatternToken tok;
       tok.type = Digit;
       store.emplace_back(tok);
       stIdx += 2;
-    } else if (stIdx + 1 < ps && pattern[stIdx] == '\\' && pattern[stIdx + 1] == 'w') {
+    } else if (stIdx + 1 < ps && p[stIdx] == '\\' && p[stIdx + 1] == 'w') {
       PatternToken tok;
       tok.type = AlphaNumeric;
       store.emplace_back(tok);
@@ -58,7 +58,7 @@ vector<PatternToken> parse(const string &pattern) {
     } else {
       PatternToken tok;
       tok.type = Character;
-      tok.character = pattern[stIdx];
+      tok.character = p[stIdx];
       store.emplace_back(tok);
       stIdx++;
     }
