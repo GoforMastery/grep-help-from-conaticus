@@ -24,7 +24,7 @@ vector<PatternToken> parse(const string &pattern) {
       unordered_set<char> positiveCharGroup;
       stIdx++;
       while (stIdx < ps && p[stIdx] != ']') {
-        positiveCharGroup.insert(pattern[stIdx]);
+        positiveCharGroup.insert(p[stIdx]);
         stIdx++;
       }
       /*pattern[stIdx] == ']'*/
@@ -62,10 +62,6 @@ vector<PatternToken> parse(const string &pattern) {
       store.emplace_back(tok);
       stIdx++;
     }
-  }
-  cout << "debug store " << "\n";
-  for (auto t : store) {
-    cout << t.character << "\n";
   }
   return store;
 }
